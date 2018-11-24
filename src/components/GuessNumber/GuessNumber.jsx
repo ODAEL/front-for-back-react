@@ -4,12 +4,17 @@ import NumberInput from 'components/NumberInput'
 
 const initialState = {
   round: 1,
+  lastRound: 3,
   step: 1,
-  maxSteps: 7,
-  maxNumber: 100,
+  lastStep: 7,
+  maxNumber: 10,
   number: null,
   realNumber: null,
-  infoText: 'Try to guess it!',
+  stepInfo: 'Try to guess it!',
+  gameInfo: '-',
+  wins: 0,
+  isEnd: false,
+  needToWin: 2
 }
 
 export default class GuessNumber extends Component {
@@ -25,19 +30,64 @@ export default class GuessNumber extends Component {
   }
 
   handleTry = () => {
-    this.setState(
+    if (this.state.isEnd) {
+      return
+    }
 
-    )
+    if (this.state.number === this.state.realNumber) {
+      this.setState({
+        stepInfo: 'Yes, you right!',
+        wins: this.state.wins + 1
+      })
+      this.processRound()
+
+    } else {
+      if (this.state.number > this.state.realNumber) {
+        this.setState({
+          stepInfo: 'Real number is less'
+        })
+
+      } else if (this.state.number < this.state.realNumber) {
+        this.setState({
+          stepInfo: 'Real number is greater'
+        })
+      }
+
+      if (this.state.step === this.state.lastStep) {
+        this.processRound()
+
+      } else {
+        this.setState({
+          step: this.state.step + 1
+        })
+      }
+    }
+  }
+
+  processRound = () => {
+    if (this.state.round === this.state.lastRound) {
+      this.setState({
+        isEnd: true,
+        gameInfo: (this.state.wins >= this.state.needToWin) ? 'You win!' : 'You lose!'
+      })
+
+    } else {
+      this.setState({
+        round: this.state.round + 1,
+        step: 1,
+        realNumber: this.getRandomRealNumber()
+      })
+    }
   }
 
   updateNumber = (evt) => {
     this.setState({
-      number: evt.target.value
+      number: parseInt(evt.target.value)
     });
   }
 
   render() {
-    const { round, step, maxSteps, maxNumber, number, realNumber, infoText } = this.state
+    const { round, lastRound, step, lastStep, maxNumber, stepInfo, gameInfo, wins, needToWin } = this.state
     return (
       <div className="row justify-center p-t bg-tertiary section">
         <div className="card standard-border card-narrow shadow">
@@ -45,14 +95,34 @@ export default class GuessNumber extends Component {
             <div>Guess Number</div>
 
             <div className="m-t">
-              <span className="info-key">Info:</span>
-              <span className="text-accent">{infoText}</span>
+              <span className="info-key">Step info:</span>
+              <span className="text-accent">{stepInfo}</span>
+            </div>
+
+            <div className="m-t">
+              <span className="info-key">Game info:</span>
+              <span className="text-accent">{gameInfo}</span>
+            </div>
+
+            <div className="m-t">
+              <span className="info-key">Step:</span>
+              <span className="">{step} / {lastStep}</span>
+            </div>
+
+            <div className="m-t">
+              <span className="info-key">Round:</span>
+              <span className="">{round} / {lastRound}</span>
+            </div>
+
+            <div className="m-t">
+              <span className="info-key">Wins:</span>
+              <span className="">{wins} ({needToWin} for win)</span>
             </div>
 
           </div>
           <div>
 
-            <NumberInput onChange={this.updateNumber} className="fancy-input m-t"/>
+            <NumberInput onChange={this.updateNumber} className="fancy-input m-t" min={0} max={maxNumber} placeholder={maxNumber}/>
             <Btn onClick={this.handleTry} className="m-t d-block">Try!</Btn>
 
           </div>
