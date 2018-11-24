@@ -35,49 +35,75 @@ export default class GuessNumber extends Component {
     }
 
     if (this.state.number === this.state.realNumber) {
-      this.setState({
-        stepInfo: 'Yes, you right!',
-        wins: this.state.wins + 1
-      })
+      this.processNumberGuessed()
+
+    } else {
+      this.processStep()
+    }
+  }
+
+  processNumberGuessed = () => {
+    this.setStepInfo('Yes, you right!')
+    this.incrementWins()
+    this.processRound()
+  }
+
+  incrementWins = () => {
+    this.setState({
+      wins: this.state.wins + 1
+    })
+  }
+
+  processStep = () => {
+    if (this.state.number > this.state.realNumber) {
+      this.setStepInfo('Real number is less')
+
+    } else if (this.state.number < this.state.realNumber) {
+      this.setStepInfo('Real number is greater')
+    }
+
+    if (this.state.step === this.state.lastStep) {
       this.processRound()
 
     } else {
-      if (this.state.number > this.state.realNumber) {
-        this.setState({
-          stepInfo: 'Real number is less'
-        })
-
-      } else if (this.state.number < this.state.realNumber) {
-        this.setState({
-          stepInfo: 'Real number is greater'
-        })
-      }
-
-      if (this.state.step === this.state.lastStep) {
-        this.processRound()
-
-      } else {
-        this.setState({
-          step: this.state.step + 1
-        })
-      }
+      this.incrementStep()
     }
+  }
+
+  incrementStep = () => {
+    this.setState({
+      step: this.state.step + 1
+    })
+  }
+
+  setStepInfo = (info) => {
+    this.setState({
+      stepInfo: info
+    })
   }
 
   processRound = () => {
     if (this.state.round === this.state.lastRound) {
-      this.setState({
-        isEnd: true,
-        gameInfo: (this.state.wins >= this.state.needToWin) ? 'You win!' : 'You lose!'
-      })
+      this.processEnd()
 
     } else {
-      this.setState({
-        round: this.state.round + 1,
-        step: 1,
-        realNumber: this.getRandomRealNumber()
-      })
+      this.processNextRound()
     }
+  }
+
+  processEnd = () => {
+    this.setState({
+      isEnd: true,
+      gameInfo: (this.state.wins >= this.state.needToWin) ? 'You win!' : 'You lose!'
+    })
+  }
+
+  processNextRound = () => {
+    this.setState({
+      round: this.state.round + 1,
+      step: 1,
+      realNumber: this.getRandomRealNumber()
+    })
   }
 
   updateNumber = (evt) => {
