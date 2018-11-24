@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Btn from 'components/Btn'
+import Btn from 'components/TextInput'
 
 const initialState = { maxValue: 20, clicks: 0, step: 1 }
 
