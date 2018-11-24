@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Btn from 'components/TextInput'
+import Btn from 'components/NumberInput'
 import SpinningLogo from 'components/SpinningLogo'
 
 const createLogo = () => ({ inverse: !!Math.round(Math.random()) })

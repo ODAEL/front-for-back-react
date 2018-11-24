@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-export default class TextInput extends Component {
+export default class NumberInput extends Component {
   render() {
     const { className } = this.props
     return (
       <input
-        type="text"
+        type="number"
         {...this.props}
         className={`${className}`}
       >

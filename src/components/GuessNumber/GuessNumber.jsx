@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Btn from 'components/Btn'
-import TextInput from 'components/TextInput'
+import TextInput from 'components/NumberInput'
 
 const initialState = { round: 1, step: 1, maxSteps: 7, maxNumber: 100, number: null, infoText: 'Try to guess it!' }
 

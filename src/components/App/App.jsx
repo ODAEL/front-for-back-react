@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import Btn from 'components/TextInput'
-import Logos from 'components/Logos'
-import ClickCounter from 'components/GuessNumber'
+import GuessNumber from '../GuessNumber/GuessNumber'
 
 export default class App extends Component {
   render() {
     return (
       <div>
-        <ClickCounter />
+        <GuessNumber />
       </div>
     )
   }
